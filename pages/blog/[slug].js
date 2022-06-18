@@ -3,6 +3,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import md from "markdown-it";
 import Image from "next/image";
+import Link from "next/link";
 
 export async function getStaticPaths() {
   const files = fs.readdirSync("posts");
@@ -31,15 +32,24 @@ export async function getStaticProps({ params: { slug } }) {
 }
 
 const BlogPage = ({ frontMatter, content }) => {
-  console.log(frontMatter);
-  console.log(content);
+  //   console.log(frontMatter);
+  //   console.log(content);
   return (
-    <div>
-      <h1>{frontMatter.title}</h1>
-      <p>{frontMatter.metaDesc}</p>
-      <Image src={frontMatter.socialImage} width="200px" height="200px"/>
-      <article dangerouslySetInnerHTML={{ __html: md().render(content) }} />
-    </div>
+    <>
+      <Link href="/">
+        <div className="p-5">
+          <span className="cursor-pointer">back</span>
+        </div>
+      </Link>
+      <div className="container p-10">
+        <h1 className="font-medium text-3xl pb-10">{frontMatter.title}</h1>
+        <p className="font-small">{frontMatter.metaDesc}</p>
+        <div className="flex justify-center p-10">
+          <Image src={frontMatter.socialImage} width="500px" height="500px" />
+        </div>
+        <article dangerouslySetInnerHTML={{ __html: md().render(content) }} />
+      </div>
+    </>
   );
 };
 
